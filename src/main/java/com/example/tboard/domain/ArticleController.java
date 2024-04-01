@@ -126,10 +126,12 @@ public class ArticleController { // Model + Controller
 //        articleView.printArticleList(articleList); // 전체 출력 -> 전체 저장소 넘기기
     }
 
+    // add 참고) 실제 데이터 저장 처리 부분
     @RequestMapping("/add")
-    @ResponseBody
+//    @ResponseBody
     public String add(@RequestParam("title")String title,
-                      @RequestParam("body")String body) {
+                      @RequestParam("body")String body,
+                      Model model) {
 
 //        System.out.print("게시물 제목을 입력해주세요 : ");
 //        String title = scan.nextLine();
@@ -139,8 +141,18 @@ public class ArticleController { // Model + Controller
 
         articleRepository.saveArticle(title, body);
 //        System.out.println("게시물이 등록되었습니다.");
-        return "게시물이 등록되었습니다.";
 
+        // 위에서 받은 입력값을 저장해주는 역할
+        ArrayList<Article> articleList = articleRepository.findAll();
+
+        model.addAttribute("articleList", articleList);
+        return "list";
+
+    }
+    // add 참고)입력화면 보여 주기
+    @RequestMapping("/form")
+    public String form(){
+    return "form";
     }
 
 //    private int getParamAsInt(String param, int defaultValue) {
