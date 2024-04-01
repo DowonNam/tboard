@@ -5,9 +5,7 @@ import com.example.tboard.base.CommonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -34,9 +32,9 @@ public class ArticleController { // Model + Controller
     return searchedList;
 
 }
-    @RequestMapping("/detail")
+    @RequestMapping("/detail/{articleId}")
 //    @ResponseBody
-    public String detail(@RequestParam("articleId")int articleId, Model model) {
+    public String detail(@PathVariable("articleId") int articleId, Model model) {
 //        System.out.print("상세보기 할 게시물 번호를 입력해주세요 : ");
 //
 //        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
@@ -68,9 +66,9 @@ public class ArticleController { // Model + Controller
         return "detail";
 //        articleView.printArticleDetail(article);
     }
-    @RequestMapping("/delete")
+    @RequestMapping("/delete/{articleId}")
     @ResponseBody
-    public String delete(@RequestParam("articleId") int articleId) {
+    public String delete(@PathVariable("articleId") int articleId) {
 
 //        System.out.print("삭제할 게시물 번호를 입력해주세요 : ");
 //
@@ -86,7 +84,8 @@ public class ArticleController { // Model + Controller
         }
 
         articleRepository.deleteArticle(article);
-        return "%d 게시물이 삭제되었습니다.".formatted(articleId);
+//        return "%d 게시물이 삭제되었습니다.".formatted(articleId);
+        return "redirect:/list";
     }
 
     @RequestMapping("/update")
@@ -129,7 +128,7 @@ public class ArticleController { // Model + Controller
     }
 
     // add 참고) 실제 데이터 저장 처리 부분
-    @RequestMapping("/add")
+    @PostMapping("/add")
 //    @ResponseBody
     public String add(@RequestParam("title")String title,
                       @RequestParam("body")String body,
@@ -157,7 +156,8 @@ public class ArticleController { // Model + Controller
 
     }
     // add 참고)입력화면 보여 주기
-    @RequestMapping("/form")
+    // get이랑 postmapping 으로 각각 바꿔주면 같은 add를 사용할 수 있다 안 바꿔주면 오류 뜸
+    @GetMapping("/add")
     public String form(){
     return "form";
     }

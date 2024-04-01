@@ -12,10 +12,11 @@
 <!-- 목적지가 없을 시 javascript:void(0) 넣어준다. 링크는 걸리지만 아무 곳에도 가지 않는다-->
 <!-- detail 화면에서 원하는 제목 링크를 누르면 그 제목에 디테일로 가게 바꿔줘야 한다 -->
 <!-- 문법 주소를 넣을 때 "@{|주소|}" -->
-        <a th:href="@{|/detail?articleId=${article.id}|}" th:text ="${article.title}"></a>
+        <a th:href="@{|/detail/${article.id}|}" th:text ="${article.title}"></a>
     </li>
 </ul>
-<a href="/form">등록하기</a>
+<!--a태그로 주소 바꾸는 건 전부 get 요청으로 들어간다-->
+<a href="/add">등록하기</a>
 </body>
 </html>
 
