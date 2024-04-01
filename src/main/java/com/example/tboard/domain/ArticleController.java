@@ -35,8 +35,8 @@ public class ArticleController { // Model + Controller
 
 }
     @RequestMapping("/detail")
-    @ResponseBody
-    public String detail(@RequestParam("articleId")int articleId) {
+//    @ResponseBody
+    public String detail(@RequestParam("articleId")int articleId, Model model) {
 //        System.out.print("상세보기 할 게시물 번호를 입력해주세요 : ");
 //
 //        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
@@ -52,18 +52,20 @@ public class ArticleController { // Model + Controller
         }
 
         article.increaseHit();
-        String jsonString = "";
-        try {
+//        String jsonString = "";
+//        try {
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//
+//            jsonString = objectMapper.writeValueAsString(article);
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            jsonString = objectMapper.writeValueAsString(article);
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return jsonString;
+        // 위에 거 삭제하고 생성자에 모델을 추가한 뒤 모델로 html에 넘겨준다
+        model.addAttribute("article", article);
+        return "detail";
 //        articleView.printArticleDetail(article);
     }
     @RequestMapping("/delete")
