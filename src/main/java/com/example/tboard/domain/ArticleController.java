@@ -142,11 +142,16 @@ public class ArticleController { // Model + Controller
         articleRepository.saveArticle(title, body);
 //        System.out.println("게시물이 등록되었습니다.");
 
-        // 위에서 받은 입력값을 저장해주는 역할
-        ArrayList<Article> articleList = articleRepository.findAll();
+//        // 위에서 받은 입력값을 저장해주는 역할
+        // list로 브라우저 주소를 변경해주면서 필요가 없어졌음  > list 자체에서 기능을 하면 되기 때문
+//        ArrayList<Article> articleList = articleRepository.findAll();
+//        model.addAttribute("articleList", articleList);
 
-        model.addAttribute("articleList", articleList);
-        return "list";
+        // 문제 : 새로고침 할때마다 강제로 값이 추가가 되는 문제
+        // 문제 원인 : add 요청의 결과 화면을 list로 보여주고 있다
+        // 문제 해결 : add url을 list로 바꾸면 된다
+        // controller에서 주소를 바꾸는 법 : redirect
+        return "redirect:/list"; // 브라우저의 주소가 /list로 바뀜
 
     }
     // add 참고)입력화면 보여 주기
