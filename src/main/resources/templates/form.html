@@ -6,7 +6,8 @@
 </head>
 <body>
 <h1>등록</h1>
-<form action="/add">
+<!--method를 안 쓰면 기본은 get이다 그러므로 post로 변경해준다 브라우저가 양식 다시 제출 확인 창을 띄워주면서 다시 확인하라고 해준다-->
+<form action="/add" method="post">
     <input type="text" name ="title">
     <input type="text" name ="body">
     <input type="submit" value ="등록">
