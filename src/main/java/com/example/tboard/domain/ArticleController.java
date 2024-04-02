@@ -21,15 +21,11 @@ public class ArticleController { // Model + Controller
     Scanner scan = commonUtil.getScanner();
     int WRONG_VALUE = -1;
 @RequestMapping("/search")
-@ResponseBody
-    public ArrayList<Article> search(@RequestParam(value = "keyword", defaultValue = "") String keyword) {
-        // 검색어를 입력
-//        System.out.println("검색 키워드를 입력해주세요 :");
-//        String keyword = scan.nextLine();
-        ArrayList<Article> searchedList = articleRepository.findArticleByKeyword(keyword);
+    public String search(@RequestParam(value = "keyword", defaultValue = "") String keyword, Model model) {
 
-//        articleView.printArticleList(searchedList);
-    return searchedList;
+        ArrayList<Article> searchedList = articleRepository.findArticleByKeyword(keyword);
+        model.addAttribute("articleList", searchedList);
+    return "list";
 
 }
     @RequestMapping("/detail/{articleId}")
