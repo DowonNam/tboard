@@ -12,5 +12,7 @@
     <div th:text="${article.body}"></div>
 </div>
 <a th:href="@{|/delete/${article.id}|}">삭제</a>
+<!--상세보기 할 id를 넘겨준다-->
+<a th:href="@{|/update/${article.id}|}">수정</a>
 </body>
 </html>

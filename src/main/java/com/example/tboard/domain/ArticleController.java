@@ -33,49 +33,24 @@ public class ArticleController { // Model + Controller
 
 }
     @RequestMapping("/detail/{articleId}")
-//    @ResponseBody
     public String detail(@PathVariable("articleId") int articleId, Model model) {
-//        System.out.print("상세보기 할 게시물 번호를 입력해주세요 : ");
-//
-//        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
-//        if(inputId == WRONG_VALUE) {
-//            return;
-//        }
 
         Article article = articleRepository.findArticleById(articleId);
 
         if (article == null) {
-//            System.out.println("없는 게시물입니다.");
             return "없는 게시물입니다.";
         }
 
         article.increaseHit();
-//        String jsonString = "";
-//        try {
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-//
-//            jsonString = objectMapper.writeValueAsString(article);
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
 
         // 위에 거 삭제하고 생성자에 모델을 추가한 뒤 모델로 html에 넘겨준다
         model.addAttribute("article", article);
         return "detail";
-//        articleView.printArticleDetail(article);
     }
     @RequestMapping("/delete/{articleId}")
     @ResponseBody
     public String delete(@PathVariable("articleId") int articleId) {
 
-//        System.out.print("삭제할 게시물 번호를 입력해주세요 : ");
-//
-//        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
-//        if(inputId == WRONG_VALUE) {
-//            return;
-//        }
 
         Article article = articleRepository.findArticleById(articleId);
 
@@ -84,38 +59,39 @@ public class ArticleController { // Model + Controller
         }
 
         articleRepository.deleteArticle(article);
-//        return "%d 게시물이 삭제되었습니다.".formatted(articleId);
         return "redirect:/list";
     }
+    // 보여주기용이기 때문에 get을 사용한다
+    @GetMapping("/update/{articleId}")
+    public String updateForm(@PathVariable("articleId") int articleId, Model model){
 
-    @RequestMapping("/update")
-    @ResponseBody
-    public String update(@RequestParam("articleId") int inputId,
-                         @RequestParam("newTitle") String newTitle,
-                         @RequestParam("newBody") String newBody) {
-//        System.out.print("수정할 게시물 번호를 입력해주세요 : ");
+        Article article = articleRepository.findArticleById(articleId);
 
-//        int inputId = getParamAsInt(scan.nextLine(), WRONG_VALUE);
-//        if(inputId == WRONG_VALUE) {
-//            return;
-//        }
-
-        Article article = articleRepository.findArticleById(inputId);
-
-        if (article == null) {
-//            System.out.println("없는 게시물입니다.");
-            return "없는 게시물입니다.";
+        if(article==null){
+            //예외처리
+            throw new RuntimeException("없는 게시물입니다.");
         }
 
-//        System.out.print("새로운 제목을 입력해주세요 : ");
-//        String newTitle = scan.nextLine();
-//
-//        System.out.print("새로운 내용을 입력해주세요 : ");
-//        String newBody = scan.nextLine();
-//
-        articleRepository.updateArticle(article, newTitle, newBody);
-        return "%d번 게시물이 수정되었습니다.".formatted(inputId);
-//        System.out.printf("%d번 게시물이 수정되었습니다.\n", inputId);
+        model.addAttribute("article", article);
+        return "updateForm";
+    }
+
+    // 실제로 서버 처리를 하는 것이기 때문에 post
+    @PostMapping("/update/{articleId}")
+    public String update(@PathVariable("articleId") int articleId,
+                         @RequestParam("title") String title,
+                         @RequestParam("body") String body) {
+
+        Article article = articleRepository.findArticleById(articleId);
+
+        if (article == null) {
+            throw new RuntimeException("없는 게시물입니다.");
+        }
+
+        articleRepository.updateArticle(article, title, body);
+        // 내가 수정한 id로 변경되어 주소가 들어간다
+        return "redirect:/detail/%d".formatted(articleId);
+
     }
 
     @RequestMapping("/list")
@@ -124,21 +100,13 @@ public class ArticleController { // Model + Controller
         model.addAttribute("articleList",articleList);
 
         return "list";
-//        articleView.printArticleList(articleList); // 전체 출력 -> 전체 저장소 넘기기
     }
 
     // add 참고) 실제 데이터 저장 처리 부분
     @PostMapping("/add")
-//    @ResponseBody
     public String add(@RequestParam("title")String title,
                       @RequestParam("body")String body,
                       Model model) {
-
-//        System.out.print("게시물 제목을 입력해주세요 : ");
-//        String title = scan.nextLine();
-//
-//        System.out.print("게시물 내용을 입력해주세요 : ");
-//        String body = scan.nextLine();
 
         articleRepository.saveArticle(title, body);
 //        System.out.println("게시물이 등록되었습니다.");
@@ -162,12 +130,7 @@ public class ArticleController { // Model + Controller
     return "form";
     }
 
-//    private int getParamAsInt(String param, int defaultValue) {
-//        try {
-//            return Integer.parseInt(param);
-//        } catch (NumberFormatException e) {
-//            System.out.println("숫자를 입력해주세요.");
-//            return defaultValue;
-//        }
-//    }
+
+
+
 }
