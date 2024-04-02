@@ -16,7 +16,9 @@ public class ArticleController { // Model + Controller
 
     CommonUtil commonUtil = new CommonUtil();
     ArticleView articleView = new ArticleView();
-    ArticleRepository articleRepository = new ArticleRepository();
+
+    // 레파지토리 db로 반영
+    Repository articleRepository = new ArticleMySQLRepository();
 
     Scanner scan = commonUtil.getScanner();
     int WRONG_VALUE = -1;
